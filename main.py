@@ -8,6 +8,14 @@ import json
 from bs4 import BeautifulSoup
 import pickle
 import requests
+import os
+
+# TMDB API configuration
+TMDB_API_KEY = "8c247ea0b4b56ed2ff7d41c9a833aa77"  # Free public API key
+TMDB_BASE_URL = "https://api.themoviedb.org/3"
+TMDB_HEADERS = {
+    "accept": "application/json"
+}
 
 # load the nlp model and tfidf vectorizer from disk
 filename = 'nlp_model.pkl'
@@ -117,94 +125,84 @@ def recommend():
     for i in range(len(cast_bios)):
         cast_bios[i] = cast_bios[i].replace(r'\n', '\n').replace(r'\"','\"')
     
-    # combining multiple lists as a dictionary which can be passed to the html file so that it can be processed easily and the order of information will be preserved
+    # combining multiple lists as a dictionary which can be passed to the html file
     movie_cards = {rec_posters[i]: rec_movies[i] for i in range(len(rec_posters))}
     
     casts = {cast_names[i]:[cast_ids[i], cast_chars[i], cast_profiles[i]] for i in range(len(cast_profiles))}
-
     cast_details = {cast_names[i]:[cast_ids[i], cast_profiles[i], cast_bdays[i], cast_places[i], cast_bios[i]] for i in range(len(cast_places))}
-    print(f"calling imdb api: {'https://www.imdb.com/title/{}/reviews/?ref_=tt_ov_rt'.format(imdb_id)}")
-    # web scraping to get user reviews from IMDB site
-    url = f'https://www.imdb.com/title/{imdb_id}/reviews/?ref_=tt_ov_rt'
-    headers = {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-        'Accept-Language': 'en-US,en;q=0.9',
-        'Accept-Encoding': 'gzip, deflate, br',
-        'Connection': 'keep-alive',
-        'Upgrade-Insecure-Requests': '1',
-        'Sec-Fetch-Dest': 'document',
-        'Sec-Fetch-Mode': 'navigate',
-        'Sec-Fetch-Site': 'none',
-        'Sec-Fetch-User': '?1'
-    }
 
     try:
-        response = requests.get(url, headers=headers, timeout=10)
-        print(f"IMDB Response Status: {response.status_code}")
+        # First, get the movie ID using the title
+        search_url = f"{TMDB_BASE_URL}/search/movie"
+        search_params = {
+            "api_key": TMDB_API_KEY,
+            "query": title,
+            "language": "en-US",
+            "page": "1"
+        }
         
-        if response.status_code == 200:
-            soup = BeautifulSoup(response.content, 'lxml')
+        search_response = requests.get(search_url, headers=TMDB_HEADERS, params=search_params)
+        search_data = search_response.json()
+        
+        if search_data.get("results"):
+            movie_id = search_data["results"][0]["id"]
             
-            # Try multiple selectors for reviews
-            review_containers = []
+            # Get reviews using the movie ID
+            reviews_url = f"{TMDB_BASE_URL}/movie/{movie_id}/reviews"
+            reviews_params = {
+                "api_key": TMDB_API_KEY,
+                "language": "en-US",
+                "page": "1"
+            }
             
-            # Try the new IMDB review container
-            review_containers = soup.find_all("div", {"class": "review-container"})
-            if not review_containers:
-                # Try alternative selectors
-                review_containers = soup.find_all("div", {"class": "lister-item-content"})
-            if not review_containers:
-                review_containers = soup.find_all("div", {"class": "text show-more__control"})
+            reviews_response = requests.get(reviews_url, headers=TMDB_HEADERS, params=reviews_params)
+            reviews_data = reviews_response.json()
             
-            print(f"Found {len(review_containers)} review containers")
+            reviews_list = []
+            reviews_status = []
             
-            reviews_list = [] # list of reviews
-            reviews_status = [] # list of comments (good or bad)
+            if reviews_data.get("results"):
+                for review in reviews_data["results"]:
+                    if review.get("content"):
+                        reviews_list.append(review["content"])
+                        try:
+                            # Analyze sentiment using the pre-trained model
+                            movie_review_list = np.array([review["content"]])
+                            movie_vector = vectorizer.transform(movie_review_list)
+                            pred = clf.predict(movie_vector)
+                            sentiment = 'Good' if pred else 'Bad'
+                            reviews_status.append(sentiment)
+                        except Exception as e:
+                            # Default to positive sentiment if analysis fails
+                            reviews_status.append('Good')
             
-            for container in review_containers:
-                # Try to find the review text in different ways
-                review_text = None
-                
-                # Try to find review text in different elements
-                review_element = container.find("div", {"class": "text show-more__control"}) or \
-                               container.find("div", {"class": "content"}) or \
-                               container.find("div", {"class": "review-text"})
-                
-                if review_element:
-                    review_text = review_element.get_text(strip=True)
-                
-                if review_text:
-                    reviews_list.append(review_text)
-                    # passing the review to our model
-                    movie_review_list = np.array([review_text])
-                    movie_vector = vectorizer.transform(movie_review_list)
-                    pred = clf.predict(movie_vector)
-                    reviews_status.append('Good' if pred else 'Bad')
-            
-            print(f"Successfully processed {len(reviews_list)} reviews")
-            
-            # combining reviews and comments into a dictionary
-            movie_reviews = {reviews_list[i]: reviews_status[i] for i in range(len(reviews_list))}
-            
-            if not movie_reviews:
-                print("No reviews were found. Using fallback reviews.")
-                # Fallback reviews if no reviews are found
+            if reviews_list:
+                movie_reviews = {reviews_list[i]: reviews_status[i] for i in range(len(reviews_list))}
+            else:
                 movie_reviews = {
                     "This movie has received positive feedback from viewers.": "Good",
                     "The film has been well-received by critics.": "Good",
                     "Some viewers have mixed opinions about this movie.": "Bad"
                 }
         else:
-            print(f"Failed to retrieve reviews. Status code: {response.status_code}")
             movie_reviews = {
-                "Unable to fetch reviews at this time.": "Good",
-                "Please try again later.": "Good"
+                "No reviews available for this movie.": "Good",
+                "Please check back later for updates.": "Good"
             }
             
-    except Exception as e:
-        print(f"Error occurred while fetching reviews: {str(e)}")
+    except requests.exceptions.RequestException as e:
         movie_reviews = {
-            "Error occurred while fetching reviews.": "Good",
+            "Network error occurred while fetching reviews.": "Good",
+            "Please check your internet connection.": "Good"
+        }
+    except json.JSONDecodeError as e:
+        movie_reviews = {
+            "Error occurred while processing reviews.": "Good",
+            "Please try again later.": "Good"
+        }
+    except Exception as e:
+        movie_reviews = {
+            "An unexpected error occurred.": "Good",
             "Please try again later.": "Good"
         }
 
