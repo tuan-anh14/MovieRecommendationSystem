@@ -60,7 +60,13 @@ pip install -r requirements.txt
 
 # Nếu có lỗi, cài đặt từng package:
 pip install pandas numpy scikit-learn flask beautifulsoup4 requests nltk
+
+#Cài đặt thư viện cần từ requirements
+pip install -r requirements.txt --force-reinstall
+#Cập nhật tránh xung đột phiên bản
+pip install --upgrade urllib3 requests
 ```
+
 
 ### **3.3 Kiểm tra cài đặt:**
 ```bash
@@ -112,7 +118,7 @@ const api_key = 'YOUR_API_KEY_HERE';
 
 ### **5.2 Kiểm tra cấu trúc thư mục:**
 ```
-AJAX-Movie-Recommendation-System-with-Sentiment-Analysis/
+Movie-Recommendation-System/
 ├── main.py
 ├── requirements.txt
 ├── static/
@@ -230,7 +236,7 @@ app.run(debug=True, port=5001)  # Thay 5000 thành 5001
 
 ---
 
-## 📊 **BƯỚC 11: CHUẨN BỊ BÁO CÁO**
+## 📊 **BƯỚC 11: CHUẨN BỊ**
 
 ### **11.1 Screenshots cần có:**
 - ✅ Project structure
@@ -258,20 +264,5 @@ Cmd + C   # macOS
 deactivate
 ```
 
----
-
-## ✅ **CHECKLIST HOÀN THÀNH**
-
-- [ ] Python 3.7+ installed
-- [ ] Repository cloned
-- [ ] Dependencies installed
-- [ ] TMDB API key obtained
-- [ ] API key configured in recommend.js
-- [ ] Application running successfully
-- [ ] Movie search working
-- [ ] Recommendations displaying
-- [ ] Sentiment analysis functioning
-- [ ] Screenshots taken for report
-- [ ] Demo video recorded (optional)
 
 **🎉 CHÚC MỪNG! DỰ ÁN ĐÃ SETUP THÀNH CÔNG!**
