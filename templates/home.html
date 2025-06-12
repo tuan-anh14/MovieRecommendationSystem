@@ -29,25 +29,56 @@
 
 <body id="content" style="font-family: 'Noto Sans JP', sans-serif;">
 
-  <div class="ml-container" style="display: block;">
+  <div class="container" style="max-width: 600px; margin: 40px auto; background: rgba(35,37,38,0.97); border-radius: 24px; box-shadow: 0 4px 32px 0 rgba(229,9,20,0.12); padding: 36px 32px 32px 32px;">
     <center>
-      <h1 style=""> Movie Recommendation System</h1>
+      <h1 style="font-size:2.2rem; margin-bottom: 18px;"><i class="fa fa-film" style="color:#e50914"></i> Movie Recommendation System</h1>
     </center>
     <div class="form-group shadow-textarea" style="margin-top: 30px;text-align: center;color: white;">
       <input type="text" name="movie" class="movie form-control" id="autoComplete" autocomplete="off"
-        placeholder="Enter the Movie Name"
-        style="background-color: #ffffff;border-color:#ffffff;width: 60%;color: #181818" required="required" />
+        placeholder="Nhập tên phim hoặc chọn chế độ khác"
+        style="background-color: #232526;border-color:#e50914;width: 100%;color: #fff;font-size:1.15rem;" required="required" />
       <br>
+    </div>
+
+    <div class="form-group" style="text-align: center; color: white;">
+      <label style="font-size:1.1rem;"><b>Chọn chế độ gợi ý:</b></label><br>
+      <div style="display: flex; flex-direction: column; align-items: flex-start; margin: 0 auto; max-width: 320px;">
+        <div class="form-check" style="margin-bottom: 6px;">
+          <input class="form-check-input" type="radio" name="rec_mode" id="rec_semantic" value="semantic" checked>
+          <label class="form-check-label" for="rec_semantic">Nội dung phim</label>
+        </div>
+        <div class="form-check" style="margin-bottom: 6px;">
+          <input class="form-check-input" type="radio" name="rec_mode" id="rec_keyword" value="keyword">
+          <label class="form-check-label" for="rec_keyword">Tiêu đề/Từ khóa</label>
+        </div>
+        <div class="form-check" style="margin-bottom: 6px;">
+          <input class="form-check-input" type="radio" name="rec_mode" id="rec_sentiment" value="sentiment">
+          <label class="form-check-label" for="rec_sentiment">Cảm xúc đánh giá</label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="rec_mode" id="rec_desc" value="desc">
+          <label class="form-check-label" for="rec_desc">Mô tả của bạn</label>
+        </div>
+      </div>
+      <br><br>
+    </div>
+
+    <div class="form-group" id="desc-input-group" style="display:none;text-align:center;">
+      <textarea id="desc-input" class="form-control" rows="2" placeholder="Nhập mô tả phim bạn muốn tìm..." style="width:100%;margin:0 auto;"></textarea>
     </div>
 
     <div class="form-group" style="text-align: center;">
       <button class="btn btn-primary btn-block movie-button"
-        style="background-color: #e50914;text-align: center;border-color: #e50914;width:120px;"
-        disabled="true">Enter</button><br><br>
+        style="background: linear-gradient(90deg, #e50914 0%, #ff6a00 100%);text-align: center;border:none;width:160px;font-size:1.15rem;border-radius:24px;box-shadow:0 2px 8px 0 rgba(229,9,20,0.12);"
+        disabled="true"><i class="fa fa-search"></i> Tìm phim</button><br><br>
     </div>
   </div>
 
-  <div id="loader" class="text-center">
+  <div id="loader">
+    <div class="loader-inner">
+      <div class="loader-spinner"></div>
+      <div class="loader-text">Đang tìm phim phù hợp cho bạn...</div>
+    </div>
   </div>
 
   <div class="fail">
@@ -68,6 +99,20 @@
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script type="text/javascript" src="{{url_for('static', filename='recommend.js')}}"></script>
+
+  <script>
+  $(document).ready(function() {
+    $('input[name="rec_mode"]').change(function() {
+      if ($('#rec_desc').is(':checked')) {
+        $('#desc-input-group').show();
+        $('#autoComplete').prop('disabled', true);
+      } else {
+        $('#desc-input-group').hide();
+        $('#autoComplete').prop('disabled', false);
+      }
+    });
+  });
+  </script>
 
 </body>
 
