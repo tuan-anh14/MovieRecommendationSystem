@@ -264,5 +264,37 @@ Cmd + C   # macOS
 deactivate
 ```
 
+## 📊 **Nguồn dữ liệu**
+
+### **1. TMDB API**
+- **Nguồn**: The Movie Database (TMDB) API
+- **URL**: https://www.themoviedb.org/documentation/api
+- **Dữ liệu thu thập**:
+  - Thông tin phim (tên, ngày phát hành, thời lượng, etc.)
+  - Thông tin cast và crew
+  - Đánh giá và nhận xét từ người dùng
+  - Poster và hình ảnh phim
+  - Thể loại và từ khóa
+
+### **2. Dataset hiện có**
+- **Nguồn**: TMDB Dataset
+- **File**: main_data.csv
+- **Các trường dữ liệu**:
+  - director_name: Tên đạo diễn
+  - actor_1_name, actor_2_name, actor_3_name: Tên diễn viên chính
+  - genres: Thể loại phim
+  - movie_title: Tên phim
+  - comb: Thông tin kết hợp cho recommendation
+
+### **3. Quá trình thu thập dữ liệu**
+- Sử dụng script `data_collection.py` để tự động thu thập dữ liệu từ TMDB API
+- Cập nhật dữ liệu định kỳ:
+  - Hàng ngày: Cập nhật đánh giá và nhận xét
+  - Hàng tuần: Thêm phim mới và cập nhật metadata
+  - Hàng tháng: Cập nhật toàn bộ dataset
+
+### **4. Documentation**
+- Chi tiết về quá trình thu thập và xử lý dữ liệu được mô tả trong `docs/data_collection.md`
+- Cấu trúc dữ liệu và các bước xử lý được ghi rõ trong documentation
 
 **🎉 CHÚC MỪNG! DỰ ÁN ĐÃ SETUP THÀNH CÔNG!**

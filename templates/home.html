@@ -29,14 +29,17 @@
 
 <body id="content" style="font-family: 'Noto Sans JP', sans-serif;">
 
-  <div class="container" style="max-width: 600px; margin: 40px auto; background: rgba(35,37,38,0.97); border-radius: 24px; box-shadow: 0 4px 32px 0 rgba(229,9,20,0.12); padding: 36px 32px 32px 32px;">
+  <div class="container"
+    style="max-width: 600px; margin: 40px auto; background: rgba(35,37,38,0.97); border-radius: 24px; box-shadow: 0 4px 32px 0 rgba(229,9,20,0.12); padding: 36px 32px 32px 32px;">
     <center>
-      <h1 style="font-size:2.2rem; margin-bottom: 18px;"><i class="fa fa-film" style="color:#e50914"></i> Movie Recommendation System</h1>
+      <h1 style="font-size:2.2rem; margin-bottom: 18px;"><i class="fa fa-film" style="color:#e50914"></i> Movie
+        Recommendation System</h1>
     </center>
     <div class="form-group shadow-textarea" style="margin-top: 30px;text-align: center;color: white;">
       <input type="text" name="movie" class="movie form-control" id="autoComplete" autocomplete="off"
         placeholder="Nhập tên phim hoặc chọn chế độ khác"
-        style="background-color: #232526;border-color:#e50914;width: 100%;color: #fff;font-size:1.15rem;" required="required" />
+        style="background-color: #232526;border-color:#e50914;width: 100%;color: #fff;font-size:1.15rem;"
+        required="required" />
       <br>
     </div>
 
@@ -45,26 +48,27 @@
       <div style="display: flex; flex-direction: column; align-items: flex-start; margin: 0 auto; max-width: 320px;">
         <div class="form-check" style="margin-bottom: 6px;">
           <input class="form-check-input" type="radio" name="rec_mode" id="rec_semantic" value="semantic" checked>
-          <label class="form-check-label" for="rec_semantic">Nội dung phim</label>
+          <label class="form-check-label" for="rec_semantic"> Nội dung phim</label>
         </div>
         <div class="form-check" style="margin-bottom: 6px;">
           <input class="form-check-input" type="radio" name="rec_mode" id="rec_keyword" value="keyword">
-          <label class="form-check-label" for="rec_keyword">Tiêu đề/Từ khóa</label>
+          <label class="form-check-label" for="rec_keyword"> Tiêu đề/Từ khóa</label>
         </div>
         <div class="form-check" style="margin-bottom: 6px;">
           <input class="form-check-input" type="radio" name="rec_mode" id="rec_sentiment" value="sentiment">
-          <label class="form-check-label" for="rec_sentiment">Cảm xúc đánh giá</label>
+          <label class="form-check-label" for="rec_sentiment"> Cảm xúc đánh giá</label>
         </div>
         <div class="form-check">
           <input class="form-check-input" type="radio" name="rec_mode" id="rec_desc" value="desc">
-          <label class="form-check-label" for="rec_desc">Mô tả của bạn</label>
+          <label class="form-check-label" for="rec_desc"> Mô tả của bạn</label>
         </div>
       </div>
       <br><br>
     </div>
 
     <div class="form-group" id="desc-input-group" style="display:none;text-align:center;">
-      <textarea id="desc-input" class="form-control" rows="2" placeholder="Nhập mô tả phim bạn muốn tìm..." style="width:100%;margin:0 auto;"></textarea>
+      <textarea id="desc-input" class="form-control" rows="2" placeholder="Nhập mô tả phim bạn muốn tìm..."
+        style="width:100%;margin:0 auto;"></textarea>
     </div>
 
     <div class="form-group" style="text-align: center;">
@@ -101,17 +105,17 @@
   <script type="text/javascript" src="{{url_for('static', filename='recommend.js')}}"></script>
 
   <script>
-  $(document).ready(function() {
-    $('input[name="rec_mode"]').change(function() {
-      if ($('#rec_desc').is(':checked')) {
-        $('#desc-input-group').show();
-        $('#autoComplete').prop('disabled', true);
-      } else {
-        $('#desc-input-group').hide();
-        $('#autoComplete').prop('disabled', false);
-      }
+    $(document).ready(function () {
+      $('input[name="rec_mode"]').change(function () {
+        if ($('#rec_desc').is(':checked')) {
+          $('#desc-input-group').show();
+          $('#autoComplete').prop('disabled', true);
+        } else {
+          $('#desc-input-group').hide();
+          $('#autoComplete').prop('disabled', false);
+        }
+      });
     });
-  });
   </script>
 
 </body>
