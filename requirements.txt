@@ -20,3 +20,7 @@ urllib3==1.26.20
 requests==2.31.0
 pickleshare==0.7.5
 sentence-transformers
+accelerate>=0.26.0
+transformers[torch]
+optuna>=3.0.0
+imbalanced-learn>=0.11.0
