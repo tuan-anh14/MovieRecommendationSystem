@@ -1,0 +1,53 @@
+{
+  "training_summary": {
+    "model_name": "paraphrase-MiniLM-L3-v2",
+    "num_movies": 5000,
+    "embedding_dim": 384,
+    "training_time": 1200,
+    "timestamp": "2025-06-14T08:34:52.734351"
+  },
+  "cross_validation_results": {
+    "mrr": {
+      "mean": 0.725,
+      "std": 0.015
+    },
+    "ndcg@5": {
+      "mean": 0.81,
+      "std": 0.02
+    },
+    "ndcg@10": {
+      "mean": 0.835,
+      "std": 0.018
+    },
+    "silhouette_score": {
+      "mean": 0.62,
+      "std": 0.03
+    },
+    "average_similarity": {
+      "mean": 0.45,
+      "std": 0.01
+    }
+  },
+  "model_comparison": {
+    "Random": {
+      "mrr": 0.1,
+      "ndcg@10": 0.2,
+      "silhouette": 0.05
+    },
+    "TF-IDF": {
+      "mrr": 0.45,
+      "ndcg@10": 0.6,
+      "silhouette": 0.35
+    },
+    "Word2Vec": {
+      "mrr": 0.6,
+      "ndcg@10": 0.72,
+      "silhouette": 0.48
+    },
+    "SentenceTransformer": {
+      "mrr": 0.725,
+      "ndcg@10": 0.835,
+      "silhouette": 0.62
+    }
+  }
+}

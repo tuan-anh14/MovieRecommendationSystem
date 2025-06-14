@@ -9,6 +9,7 @@ from bs4 import BeautifulSoup
 import pickle
 import requests
 import os
+from sentence_transformers import SentenceTransformer
 
 # TMDB API configuration
 TMDB_API_KEY = "8c247ea0b4b56ed2ff7d41c9a833aa77"  # Free public API key
@@ -17,38 +18,51 @@ TMDB_HEADERS = {
     "accept": "application/json"
 }
 
-# load the nlp model and tfidf vectorizer from disk
-filename = 'nlp_model.pkl'
-clf = pickle.load(open(filename, 'rb'))
-vectorizer = pickle.load(open('tranform.pkl','rb'))
+# Load models and data
+with open('movie_embeddings.pkl', 'rb') as f:
+    movie_embeddings = pickle.load(f)
+with open('movie_titles.pkl', 'rb') as f:
+    movie_titles = pickle.load(f)
+with open('model_metadata.pkl', 'rb') as f:
+    model_metadata = pickle.load(f)
+with open('models/sentiment_model_3class.pkl', 'rb') as f:
+    sentiment_model = pickle.load(f)
+with open('models/tfidf_vectorizer_3class.pkl', 'rb') as f:
+    vectorizer = pickle.load(f)
+
+# Load the trained model
+model = SentenceTransformer(model_metadata['model_name'])
 
 def create_similarity():
-    data = pd.read_csv('main_data.csv')
-    # creating a count matrix
-    cv = CountVectorizer()
-    count_matrix = cv.fit_transform(data['comb'])
-    # creating a similarity score matrix
-    similarity = cosine_similarity(count_matrix)
-    return data,similarity
+    """Create similarity matrix using the trained embeddings"""
+    similarity = cosine_similarity(movie_embeddings)
+    return movie_titles, similarity
 
 def rcmd(m):
+    """Get movie recommendations using the trained model"""
     m = m.lower()
     try:
-        data.head()
-        similarity.shape
+        if not hasattr(rcmd, 'similarity'):
+            rcmd.titles, rcmd.similarity = create_similarity()
     except:
-        data, similarity = create_similarity()
-    if m not in data['movie_title'].unique():
+        rcmd.titles, rcmd.similarity = create_similarity()
+    
+    if m not in [t.lower() for t in rcmd.titles]:
         return('Sorry! The movie you requested is not in our database. Please check the spelling or try with some other movies')
     else:
-        i = data.loc[data['movie_title']==m].index[0]
-        lst = list(enumerate(similarity[i]))
-        lst = sorted(lst, key = lambda x:x[1] ,reverse=True)
-        lst = lst[1:11] # excluding first item since it is the requested movie itself
+        # Find the index of the movie
+        idx = [i for i, t in enumerate(rcmd.titles) if t.lower() == m][0]
+        
+        # Get similarity scores
+        lst = list(enumerate(rcmd.similarity[idx]))
+        lst = sorted(lst, key=lambda x: x[1], reverse=True)
+        lst = lst[1:11]  # excluding first item since it is the requested movie itself
+        
+        # Get recommended movies
         l = []
         for i in range(len(lst)):
             a = lst[i][0]
-            l.append(data['movie_title'][a])
+            l.append(rcmd.titles[a])
         return l
     
 # converting list of string to list (eg. "["abc","def"]" to ["abc","def"])
@@ -169,12 +183,11 @@ def recommend():
                             # Analyze sentiment using the pre-trained model
                             movie_review_list = np.array([review["content"]])
                             movie_vector = vectorizer.transform(movie_review_list)
-                            pred = clf.predict(movie_vector)
-                            sentiment = 'Good' if pred else 'Bad'
+                            pred = sentiment_model.predict(movie_vector)
+                            sentiment = 'Good' if pred[0] == 2 else 'Neutral' if pred[0] == 1 else 'Bad'
                             reviews_status.append(sentiment)
                         except Exception as e:
-                            # Default to positive sentiment if analysis fails
-                            reviews_status.append('Good')
+                            reviews_status.append('Neutral')
             
             if reviews_list:
                 movie_reviews = {reviews_list[i]: reviews_status[i] for i in range(len(reviews_list))}
@@ -182,28 +195,28 @@ def recommend():
                 movie_reviews = {
                     "This movie has received positive feedback from viewers.": "Good",
                     "The film has been well-received by critics.": "Good",
-                    "Some viewers have mixed opinions about this movie.": "Bad"
+                    "Some viewers have mixed opinions about this movie.": "Neutral"
                 }
         else:
             movie_reviews = {
-                "No reviews available for this movie.": "Good",
-                "Please check back later for updates.": "Good"
+                "No reviews available for this movie.": "Neutral",
+                "Please check back later for updates.": "Neutral"
             }
             
     except requests.exceptions.RequestException as e:
         movie_reviews = {
-            "Network error occurred while fetching reviews.": "Good",
-            "Please check your internet connection.": "Good"
+            "Network error occurred while fetching reviews.": "Neutral",
+            "Please check your internet connection.": "Neutral"
         }
     except json.JSONDecodeError as e:
         movie_reviews = {
-            "Error occurred while processing reviews.": "Good",
-            "Please try again later.": "Good"
+            "Error occurred while processing reviews.": "Neutral",
+            "Please try again later.": "Neutral"
         }
     except Exception as e:
         movie_reviews = {
-            "An unexpected error occurred.": "Good",
-            "Please try again later.": "Good"
+            "An unexpected error occurred.": "Neutral",
+            "Please try again later.": "Neutral"
         }
 
     # passing all the data to the html file
