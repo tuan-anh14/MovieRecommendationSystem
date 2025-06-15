@@ -24,14 +24,14 @@ python -m pip --version
 ### **2.1 Clone repository:**
 ```bash
 # Mở terminal/command prompt
-git clone https://github.com/kishan0725/AJAX-Movie-Recommendation-System-with-Sentiment-Analysis.git
+git clone https://github.com/tuan-anh14/MovieRecommendationSystem.git
 
 # Hoặc download ZIP từ GitHub và extract
 ```
 
 ### **2.2 Vào thư mục project:**
 ```bash
-cd AJAX-Movie-Recommendation-System-with-Sentiment-Analysis
+cd MovieRecommendationSystem
 ```
 
 ---
@@ -104,15 +104,7 @@ python -c "import pandas, numpy, sklearn, flask; print('All packages installed s
 ## ⚙️ **BƯỚC 5: CẤU HÌNH PROJECT**
 
 ### **5.1 Cập nhật API Key:**
-1. Mở file **`static/recommend.js`**
-2. Tìm dòng 15 và 29 có **`YOUR_API_KEY`**
-3. Thay thế bằng API key của bạn:
-
 ```javascript
-// Dòng 15:
-const api_key = 'YOUR_API_KEY_HERE';
-
-// Dòng 29:
 const api_key = 'YOUR_API_KEY_HERE';
 ```
 
@@ -203,66 +195,6 @@ app.run(debug=True, port=5001)  # Thay 5000 thành 5001
 - Thử lại sau vài phút
 - Sử dụng VPN nếu cần
 
----
-
-## 📱 **BƯỚC 9: DEMO VÀ TESTING**
-
-### **9.1 Các phim để test:**
-- **Popular movies:** "Avengers", "Titanic", "Avatar"
-- **Classic movies:** "The Godfather", "Pulp Fiction"
-- **Recent movies:** "Joker", "1917", "Parasite"
-
-### **9.2 Screenshots để báo cáo:**
-1. **Home page** với search box
-2. **Movie selection** dropdown
-3. **Recommendation results** với posters
-4. **Sentiment analysis** results
-5. **Network tab** showing AJAX calls
-
----
-
-## 🎨 **BƯỚC 10: CUSTOMIZATION (OPTIONAL)**
-
-### **10.1 Thay đổi giao diện:**
-- Edit `templates/index.html` cho HTML
-- Edit `static/style.css` cho CSS
-- Edit `static/recommend.js` cho JavaScript
-
-### **10.2 Thêm features:**
-- Thêm more recommendation algorithms
-- Integrate user ratings
-- Add movie trailers
-- Export recommendations to PDF
-
----
-
-## 📊 **BƯỚC 11: CHUẨN BỊ**
-
-### **11.1 Screenshots cần có:**
-- ✅ Project structure
-- ✅ API key configuration
-- ✅ Running application
-- ✅ Movie search functionality
-- ✅ Recommendation results
-- ✅ Sentiment analysis output
-
-### **11.2 Metrics để đo:**
-- **Response time:** Thời gian load recommendations
-- **Accuracy:** Độ chính xác của recommendations
-- **User experience:** Ease of use, interface design
-
----
-
-## 🔄 **BƯỚC 12: STOP APPLICATION**
-
-```bash
-# Trong terminal đang chạy server:
-Ctrl + C  # Windows/Linux
-Cmd + C   # macOS
-
-# Deactivate virtual environment
-deactivate
-```
 
 ## 📊 **Nguồn dữ liệu**
 
