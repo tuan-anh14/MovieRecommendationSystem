@@ -24,7 +24,7 @@
 }
 
 #content {
-	background-image: url("../static/image.jpg");
+	background-image: url("../static/cover.jpg");
 	background-color: #181818;
 	font-family: 'Noto Sans JP', sans-serif;
 }
@@ -255,187 +255,31 @@ h6 {
 	color: white;
 }
 
-/* Modern Card Effect */
-.card,
-.castcard {
-	border-radius: 18px;
-	box-shadow: 0 4px 24px 0 rgba(0, 0, 0, 0.18), 0 1.5px 4px 0 rgba(229, 9, 20, 0.08);
-	background: #232526;
-	/* fallback for old browsers */
-	background: linear-gradient(135deg, #232526 0%, #414345 100%);
-	transition: transform 0.2s cubic-bezier(.4, 2, .6, 1), box-shadow 0.2s;
-	border: none;
-}
-
-.card:hover,
-.castcard:hover {
-	transform: translateY(-8px) scale(1.03);
-	box-shadow: 0 8px 32px 0 rgba(229, 9, 20, 0.18), 0 3px 8px 0 rgba(229, 9, 20, 0.12);
-	background: linear-gradient(135deg, #232526 0%, #e50914 100%);
-}
-
-.card-btn,
-.btn-danger,
-.btn-primary {
-	background: linear-gradient(90deg, #e50914 0%, #ff6a00 100%);
-	border: none;
-	color: #fff;
+.main-movie-title {
+	color: #fff !important;
+	font-size: 2.2rem;
 	font-weight: bold;
-	border-radius: 24px;
-	box-shadow: 0 2px 8px 0 rgba(229, 9, 20, 0.12);
-	transition: background 0.2s, box-shadow 0.2s;
-}
-
-.card-btn:hover,
-.btn-danger:hover,
-.btn-primary:hover {
-	background: linear-gradient(90deg, #ff6a00 0%, #e50914 100%);
-	color: #fff;
-	box-shadow: 0 4px 16px 0 rgba(229, 9, 20, 0.18);
-}
-
-input,
-textarea,
-.form-control {
-	border-radius: 12px !important;
-	border: 1.5px solid #e50914 !important;
-	background: #232526 !important;
-	color: #fff !important;
-	font-size: 1.1rem;
-	padding: 10px 16px;
-	transition: border 0.2s;
-}
-
-input:focus,
-textarea:focus {
-	border: 2px solid #ff6a00 !important;
-	outline: none !important;
-}
-
-body,
-#content {
-	background: linear-gradient(120deg, #181818 0%, #232526 100%) !important;
-	color: #fff;
-}
-
-h1,
-h2,
-h3,
-h5,
-h6,
-label,
-.form-check-label {
-	color: #fff !important;
+	text-shadow: 0 2px 8px #000, 0 1px 1px #222;
 	letter-spacing: 1px;
 }
 
-.table {
-	background: #232526;
-	border-radius: 16px;
-	overflow: hidden;
-	box-shadow: 0 2px 12px 0 rgba(229, 9, 20, 0.10);
-}
-
-.table th,
-.table td {
-	background: #232526 !important;
+.label-movie {
 	color: #fff !important;
-	border-color: #e50914 !important;
-	font-size: 1.05rem;
-}
-
-.table thead th {
-	background: #e50914 !important;
-	color: #fff !important;
-	border: none;
-}
-
-/* Dark mode for modal */
-.modal-content {
-	background: #232526;
-	color: #fff;
-	border-radius: 18px;
-	border: none;
-}
-
-.modal-header {
-	border-bottom: 1.5px solid #e50914;
-}
-
-.modal-footer {
-	border-top: 1.5px solid #e50914;
-}
-
-/* Responsive tweaks */
-@media (max-width: 650px) {
-
-	.card,
-	.castcard {
-		width: 90vw !important;
-		margin: 10px auto !important;
-	}
-
-	.movie-content {
-		flex-direction: column;
-		align-items: center;
-	}
-
-	h1,
-	h2,
-	h3 {
-		font-size: 1.3rem !important;
-	}
-}
-
-/* Toast/alert modern style */
-.fail {
-	background: rgba(229, 9, 20, 0.85);
-	color: #fff;
-	border-radius: 12px;
-	padding: 18px 24px;
-	margin: 18px auto;
-	width: fit-content;
 	font-weight: bold;
-	font-size: 1.1rem;
-	box-shadow: 0 2px 8px 0 rgba(229, 9, 20, 0.18);
+	text-shadow: 0 2px 8px #000, 0 1px 1px #222;
 }
 
-::-webkit-scrollbar {
-	width: 8px;
-	background: #232526;
+.block-title {
+	color: #fff !important;
+	font-weight: bold;
+	text-shadow: 0 2px 8px #000, 0 1px 1px #222;
+	letter-spacing: 1px;
 }
 
-::-webkit-scrollbar-thumb {
-	background: #e50914;
-	border-radius: 8px;
-}
-
-/* Hiệu ứng cho ảnh poster */
-.poster,
-.cast-img,
-.card-img-top {
-	border-radius: 18px;
-	box-shadow: 0 2px 16px 0 rgba(229, 9, 20, 0.12);
-	transition: box-shadow 0.2s, filter 0.2s;
-}
-
-.poster:hover,
-.cast-img:hover,
-.card-img-top:hover {
-	box-shadow: 0 6px 32px 0 rgba(229, 9, 20, 0.22);
-	filter: brightness(1.08) saturate(1.2);
-}
-
-/* Nút radio hiện đại */
-.form-check-input:checked {
-	background-color: #e50914 !important;
-	border-color: #e50914 !important;
-}
-
-.form-check-input {
-	width: 1.2em;
-	height: 1.2em;
-	margin-top: 0.2em;
+.table-title {
+	color: #fff !important;
+	font-weight: bold;
+	text-shadow: 0 2px 8px #000, 0 1px 1px #222;
 }
 
 /* Loader overlay hiện đại */

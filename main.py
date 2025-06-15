@@ -22,21 +22,21 @@ print("Loading models and data...")
 
 # Load recommendation system models and data
 try:
-    with open('movie_embeddings.pkl', 'rb') as f:
+    with open('recommend/models/movie_embeddings.pkl', 'rb') as f:
         movie_embeddings = pickle.load(f)
     print("✓ Movie embeddings loaded successfully")
 except Exception as e:
     print(f"✗ Error loading movie embeddings: {e}")
 
 try:
-    with open('movie_titles.pkl', 'rb') as f:
+    with open('recommend/models/movie_titles.pkl', 'rb') as f:
         movie_titles = pickle.load(f)
     print(f"✓ Movie titles loaded successfully ({len(movie_titles)} movies)")
 except Exception as e:
     print(f"✗ Error loading movie titles: {e}")
 
 try:
-    with open('model_metadata.pkl', 'rb') as f:
+    with open('recommend/models/model_metadata.pkl', 'rb') as f:
         model_metadata = pickle.load(f)
     print(f"✓ Model metadata loaded: {model_metadata.get('model_name', 'Unknown')}")
 except Exception as e:
@@ -44,7 +44,7 @@ except Exception as e:
 
 # Load sentiment analysis models (using Logistic Regression - best performing model)
 try:
-    with open('models/sentiment_model_lr.pkl', 'rb') as f:
+    with open('sentiment_analysis/models/sentiment_model_lr.pkl', 'rb') as f:
         sentiment_pipeline = pickle.load(f)
     print("✓ Sentiment pipeline (Logistic Regression) loaded successfully")
     print(f"Pipeline steps: {[step[0] for step in sentiment_pipeline.steps]}")
